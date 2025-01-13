@@ -19,7 +19,7 @@ jobs:
     steps:
       - id: result
         env:
-          JSON: ${{ toJson('os:["ubuntu-latest", "windows-latest", "macos-latest"]') }}
+          JSON: '{ os: ["ubuntu-latest", "windows-latest", "macos-latest"] }'
         run: echo "configs=$JSON" >> "$GITHUB_OUTPUT"
 
 
