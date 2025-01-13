@@ -35,7 +35,7 @@ Please refer to the [release page](https://github.com/tshion/can-create-release/
 
 ### Check the same repository
 ``` yaml
-- uses: actions/checkout@4
+- uses: actions/checkout@v4
 
 - uses: tshion/can-create-release@(version)
   with:
@@ -46,7 +46,7 @@ Please refer to the [release page](https://github.com/tshion/can-create-release/
 For example, to check for `tshion/apply-git-user`, write.
 
 ``` yaml
-- uses: actions/checkout@4
+- uses: actions/checkout@v4
   with:
     repository: tshion/apply-git-user
     token: (Personal access token (PAT) used to fetch the repository)
