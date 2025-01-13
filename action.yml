@@ -1,0 +1,37 @@
+name: Can create release
+description: Whether a new github release of the repository can be created.
+branding:
+  icon: check-circle
+  color: orange
+
+inputs:
+  repository:
+    description: Repository name with owner. For example, tshion/can-create-release
+    default: ${{ github.repository }}
+  tag:
+    description: Tag name you want to release
+    required: true
+  token:
+    description: >
+      Personal access token (PAT) used to fetch the repository. The PAT is configured
+      with the local git config, which enables your scripts to run authenticated git
+      commands. The post-job step removes the PAT.
+
+
+      We recommend using a service account with the least permissions necessary.
+      Also when generating a new PAT, select the least scopes necessary.
+
+
+      [Learn more about creating and using encrypted secrets](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets)
+    default: ${{ github.token }}
+
+runs:
+  using: composite
+  steps:
+    - name: Check if a github release can be created
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        REPO: ${{ inputs.repository }}
+        TAG: ${{ inputs.tag }}
+      shell: bash
+      run: bash can-create-release.bash "$TAG" "$REPO"

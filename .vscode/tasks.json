@@ -1,0 +1,30 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "run",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "can-create-release.bash",
+                "${input:gitTag}",
+                "${input:repoName}",
+            ],
+        }
+    ],
+    "inputs": [
+        {
+            "id": "gitTag",
+            "type": "promptString",
+            "description": "Tag name you want to release",
+        },
+        {
+            "id": "repoName",
+            "type": "promptString",
+            "default": "tshion/can-create-release",
+            "description": "Repository name with owner. For example, tshion/can-create-release",
+        },
+    ],
+}
