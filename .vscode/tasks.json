@@ -18,13 +18,13 @@
         {
             "id": "gitTag",
             "type": "promptString",
-            "description": "Git tag name",
+            "description": "Tag name you want to release",
         },
         {
             "id": "repoName",
             "type": "promptString",
             "default": "tshion/can-create-release",
-            "description": "GitHub repository name",
+            "description": "Repository name with owner. For example, tshion/can-create-release",
         },
     ],
 }

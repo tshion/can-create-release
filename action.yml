@@ -6,10 +6,10 @@ branding:
 
 inputs:
   repository:
-    description: 'Repository name with owner. For example, tshion/can-create-release'
+    description: Repository name with owner. For example, tshion/can-create-release
     default: ${{ github.repository }}
   tag:
-    description: Git tag name
+    description: Tag name you want to release
     required: true
   token:
     description: >

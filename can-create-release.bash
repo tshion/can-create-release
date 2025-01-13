@@ -2,18 +2,18 @@
 
 # Whether a new github release of the repository can be created.
 #
-# $1 -> Git tag name
-# $2 -> GitHub repository name
+# $1 -> Tag name you want to release
+# $2 -> Repository name with owner. For example, tshion/can-create-release
 
 gitTag="$1"
 if [ -z "$gitTag" ]; then
-    echo "Please set git tag name."
+    echo "Please set tag name."
     exit 1
 fi
 
 repoName="$2"
 if [ -z "$repoName" ]; then
-    echo "Please set git repository name."
+    echo "Please set repository name."
     exit 1
 fi
 
