@@ -1,0 +1,116 @@
+name: Create a release pull request
+
+on:
+  workflow_dispatch:
+    inputs:
+      versionMajor:
+        description: 'バージョン情報: major'
+        required: true
+        type: string
+      versionMinor:
+        description: 'バージョン情報: minor'
+        required: true
+        type: string
+      versionPatch:
+        description: 'バージョン情報: patch'
+        required: true
+        type: string
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    if: ${{ github.ref_type == 'branch' && github.ref_name == 'develop' }}
+    runs-on: ubuntu-24.04
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
+    permissions:
+      contents: write
+    timeout-minutes: 3
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+
+      - name: Format meta data
+        id: meta
+        env:
+          VERSION: '${{ inputs.versionMajor }}.${{ inputs.versionMinor }}.${{ inputs.versionPatch }}'
+        run: echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Can create a release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          TAG: ${{ steps.meta.outputs.version }}
+        run: bash can-create-release.bash "$TAG" "$REPO"
+
+
+  test-action:
+    needs: check
+    uses: ./.github/workflows/test-action.yml
+
+
+  create-pr:
+    needs:
+      - check
+      - test-action
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      pull-requests: write
+    timeout-minutes: 5
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+
+      # https://github.com/tshion/apply-git-user
+      - uses: tshion/apply-git-user@2.1.0
+        with:
+          user: github-actions
+
+      - name: Set version & git operation
+        env:
+          VERSION: ${{ needs.check.outputs.version }}
+        run: |
+          git switch --create "$BRANCH"
+
+          echo "$VERSION" > .version
+          git add .version
+
+          git commit --message "Update $VERSION"
+          git push --set-upstream origin "feature/update_${VERSION}"
+
+      - name: Generate diff notes
+        id: notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REF_NAME: released
+          TAG: ${{ needs.check.outputs.version }}
+        run: |
+          response=$(bash .github/scripts/presume-release-notes.bash "$TAG" "$REF_NAME")
+          echo "response=$response" >> "$GITHUB_OUTPUT"
+
+      - name: Create a file for pull request body
+        shell: ruby {0}
+        env:
+          NOTE: ${{ fromJson(steps.notes.outputs.response).body }}
+          URL: '${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+        run: |
+          text = <<"BODY"
+            Test result: #{ENV['URL']}
+
+            #{ENV['NOTE']}
+          BODY
+          File.open("PR_BODY", "w") { |file|
+            file.write(text)
+          }
+
+      - name: Create a pull request
+        env:
+          ASSIGNEE: tshion
+          BASE: released
+          GH_TOKEN: ${{ github.token }}
+          TITLE: "Update ${{ needs.check.outputs.version }}"
+        run: gh pr create --assignee "$ASSIGNEE" --base "$BASE" --title "$TITLE" --body-file PR_BODY

@@ -4,13 +4,26 @@ on:
   workflow_call:
   workflow_dispatch:
 
-
 concurrency:
   group: ${{ github.workflow }}-test-action
   cancel-in-progress: true
 
-
 jobs:
+  test-syntax:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+
+      - continue-on-error: true
+        uses: ./
+
+      - if: ${{ failure() }}
+        run: exit 1
+
+      - run: echo 'Syntax error successfully detected!'
+
   config:
     runs-on: ubuntu-24.04
     timeout-minutes: 3
@@ -21,7 +34,6 @@ jobs:
         env:
           JSON: '{ os: ["ubuntu-latest", "windows-latest", "macos-latest"] }'
         run: echo "configs=$JSON" >> "$GITHUB_OUTPUT"
-
 
   check-the-same-repository:
     needs: config
@@ -49,7 +61,6 @@ jobs:
         run: exit 1
 
       - run: echo 'Duplicates successfully detected!'
-
 
   check-the-other-repository:
     needs: config
