@@ -46,7 +46,9 @@ jobs:
           tag: 0.0.0
 
       - if: ${{ failure() }}
-        run: echo 'Duplicates successfully detected!'
+        run: exit 1
+
+      - run: echo 'Duplicates successfully detected!'
 
 
   check-the-other-repository:
@@ -86,4 +88,6 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
 
       - if: ${{ failure() }}
-        run: echo 'Duplicates successfully detected!'
+        run: exit 1
+
+      - run: echo 'Duplicates successfully detected!'
