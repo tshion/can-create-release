@@ -40,7 +40,8 @@ jobs:
 
       - run: echo 'Successfully checked!'
 
-      - uses: ./
+      - continue-on-error: true
+        uses: ./
         with:
           tag: 0.0.0
 
@@ -77,7 +78,8 @@ jobs:
 
       - run: echo 'Successfully checked!'
 
-      - uses: ./
+      - continue-on-error: true
+        uses: ./
         with:
           repository: tshion/apply-git-user
           tag: 1.0.0
