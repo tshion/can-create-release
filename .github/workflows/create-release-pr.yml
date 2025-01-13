@@ -74,13 +74,14 @@ jobs:
         env:
           VERSION: ${{ needs.check.outputs.version }}
         run: |
-          git switch --create "$BRANCH"
+          branch="feature/update_${VERSION}"
+          git switch --create "$branch"
 
           echo "$VERSION" > .version
           git add .version
 
           git commit --message "Update $VERSION"
-          git push --set-upstream origin "feature/update_${VERSION}"
+          git push --set-upstream origin "$branch"
 
       - name: Generate diff notes
         id: notes
