@@ -2,6 +2,10 @@ name: Test action
 
 on:
   workflow_call:
+    secrets:
+      PRIVATE_KEY:
+        required: true
+
   workflow_dispatch:
 
 concurrency:
@@ -25,6 +29,7 @@ jobs:
       - run: echo 'Syntax error successfully detected!'
 
   config:
+    needs: test-syntax
     runs-on: ubuntu-24.04
     timeout-minutes: 3
     outputs:

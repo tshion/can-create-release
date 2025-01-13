@@ -46,11 +46,11 @@ jobs:
           TAG: ${{ steps.meta.outputs.version }}
         run: bash can-create-release.bash "$TAG" "$REPO"
 
-
   test-action:
     needs: check
     uses: ./.github/workflows/test-action.yml
-
+    secrets:
+      PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
 
   create-pr:
     needs:
