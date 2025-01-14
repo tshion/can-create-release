@@ -67,7 +67,36 @@ jobs:
 
       - run: echo 'Duplicates successfully detected!'
 
-  check-the-other-repository:
+  check-the-other-public-repository:
+    needs: config
+    strategy:
+      matrix: ${{ fromJson(needs.config.outputs.configs) }}
+      max-parallel: 1
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 3
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+
+      - uses: ./
+        with:
+          repository: tshion/apply-git-user
+          tag: newTagName
+
+      - run: echo 'Successfully checked!'
+
+      - continue-on-error: true
+        uses: ./
+        with:
+          repository: tshion/apply-git-user
+          tag: 1.0.0
+
+      - if: ${{ failure() }}
+        run: exit 1
+
+      - run: echo 'Duplicates successfully detected!'
+
+  check-the-other-repository-with-pat:
     needs: config
     strategy:
       matrix: ${{ fromJson(needs.config.outputs.configs) }}
