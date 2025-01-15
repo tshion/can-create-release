@@ -40,7 +40,7 @@ jobs:
           JSON: '{ os: ["ubuntu-latest", "windows-latest", "macos-latest"] }'
         run: echo "configs=$JSON" >> "$GITHUB_OUTPUT"
 
-  check-the-same-repository:
+  check-in-the-same-repository:
     needs: config
     strategy:
       matrix: ${{ fromJson(needs.config.outputs.configs) }}
@@ -67,7 +67,7 @@ jobs:
 
       - run: echo 'Duplicates successfully detected!'
 
-  check-the-other-public-repository:
+  check-another-repository:
     needs: config
     strategy:
       matrix: ${{ fromJson(needs.config.outputs.configs) }}
@@ -96,7 +96,7 @@ jobs:
 
       - run: echo 'Duplicates successfully detected!'
 
-  check-the-other-repository-with-pat:
+  check-another-repository-with-pat:
     needs: config
     strategy:
       matrix: ${{ fromJson(needs.config.outputs.configs) }}

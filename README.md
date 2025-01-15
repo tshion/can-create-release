@@ -30,17 +30,17 @@ If the tag name is already is use, an error will occur.
     token: ''
 ```
 
-## Examples
+## Scenarios
 Please refer to the [release page](https://github.com/tshion/can-create-release/releases) for the latest `version`.
 
-### Check the same repository
+### Check in the same repository
 ``` yaml
 - uses: tshion/can-create-release@(version)
   with:
     tag: (Tag name you want to release)
 ```
 
-### Check the other public repository
+### Check another repository
 ``` yaml
 - uses: tshion/can-create-release@(version)
   with:
@@ -48,7 +48,9 @@ Please refer to the [release page](https://github.com/tshion/can-create-release/
     tag: (Tag name you want to release)
 ```
 
-### Check the other private repository
+### Check another repository (private)
+You need to provide PAT that can read another repository.
+
 ``` yaml
 - uses: tshion/can-create-release@(version)
   with:
