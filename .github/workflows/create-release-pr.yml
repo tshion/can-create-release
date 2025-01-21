@@ -88,9 +88,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           REF_NAME: released
-          TAG: ${{ needs.check.outputs.version }}
         run: |
-          response=$(bash .github/scripts/presume-release-notes.bash "$TAG" "$REF_NAME")
+          response=$(bash .github/scripts/presume-release-notes.bash "$REF_NAME")
           echo "response=$response" >> "$GITHUB_OUTPUT"
 
       - name: Create a file for pull request body
