@@ -30,30 +30,31 @@ If the tag name is already is use, an error will occur.
     token: ''
 ```
 
-## Examples
+## Scenarios
 Please refer to the [release page](https://github.com/tshion/can-create-release/releases) for the latest `version`.
 
-### Check the same repository
+### Check in the same repository
 ``` yaml
-- uses: actions/checkout@v4
-
 - uses: tshion/can-create-release@(version)
   with:
     tag: (Tag name you want to release)
 ```
 
-### Check the other repository
-For example, to check for `tshion/apply-git-user`, write.
-
+### Check another repository
 ``` yaml
-- uses: actions/checkout@v4
-  with:
-    repository: tshion/apply-git-user
-    token: (Personal access token (PAT) used to fetch the repository)
-
 - uses: tshion/can-create-release@(version)
   with:
-    repository: tshion/apply-git-user
+    repository: (Repository name with owner)
+    tag: (Tag name you want to release)
+```
+
+### Check another repository (private)
+You need to provide PAT that can read another repository.
+
+``` yaml
+- uses: tshion/can-create-release@(version)
+  with:
+    repository: (Repository name with owner)
     tag: (Tag name you want to release)
     token: (Personal access token (PAT) used to fetch the repository)
 ```
