@@ -31,7 +31,7 @@ jobs:
     timeout-minutes: 3
     steps:
       # https://github.com/actions/checkout
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Format meta data
         id: meta
@@ -63,10 +63,10 @@ jobs:
     timeout-minutes: 5
     steps:
       # https://github.com/actions/checkout
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # https://github.com/tshion/apply-git-user
-      - uses: tshion/apply-git-user@2.1.1
+      - uses: tshion/apply-git-user@2.1.2
         with:
           user: github-actions
 
@@ -76,6 +76,9 @@ jobs:
         run: |
           branch="feature/update_${VERSION}"
           git switch --create "$branch"
+
+          git fetch origin released
+          git merge --allow-unrelated-histories --strategy=ours origin/released
 
           echo "$VERSION" > .version
           git add .version
