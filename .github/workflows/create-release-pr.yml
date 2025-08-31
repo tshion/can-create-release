@@ -77,6 +77,9 @@ jobs:
           branch="feature/update_${VERSION}"
           git switch --create "$branch"
 
+          git fetch origin released
+          git merge --allow-unrelated-histories --strategy=ours origin/released
+
           echo "$VERSION" > .version
           git add .version
 
