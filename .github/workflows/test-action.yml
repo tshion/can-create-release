@@ -18,7 +18,7 @@ jobs:
     timeout-minutes: 3
     steps:
       # https://github.com/actions/checkout
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - continue-on-error: true
         uses: ./
@@ -49,7 +49,7 @@ jobs:
     timeout-minutes: 3
     steps:
       # https://github.com/actions/checkout
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - uses: ./
         with:
@@ -76,7 +76,7 @@ jobs:
     timeout-minutes: 3
     steps:
       # https://github.com/actions/checkout
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - uses: ./
         with:
@@ -105,7 +105,7 @@ jobs:
     timeout-minutes: 3
     steps:
       # https://github.com/actions/checkout
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       # https://github.com/actions/create-github-app-token
       - name: Create token for dist repository
